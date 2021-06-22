@@ -1,0 +1,43 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id    String  @default(uuid()) @id
+  email String  @unique
+  name  String
+  password  String
+  admin  Boolean @default(false)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  compliment_sent Compliment[] @relation("user_sender")
+  compliment_received Compliment[] @relation("user_receiver")
+}
+
+model Tag {
+  id String @default(uuid()) @id
+  name String
+  compliment Compliment[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Compliment {
+  id String @default(uuid()) @id
+  user_sender String 
+  user_receiver String 
+  tag_id String
+  message String
+  user_s User @relation("user_sender",fields: [user_sender], references: [id])
+  user_r User @relation("user_receiver",fields: [user_receiver], references: [id])
+  tag Tag @relation(fields: [tag_id], references:[id])
+  created_at DateTime @default(now())
+}
