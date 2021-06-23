@@ -4,8 +4,8 @@ import { TagController } from './infra/http/controller/tag.controller';
 import { PrismaModule } from '@shared/prisma/prisma.module';
 
 @Module({
+  imports: [PrismaModule],
   controllers: [TagController],
   providers: [TagService],
-  imports: [PrismaModule],
 })
 export class TagModule {}

@@ -8,6 +8,10 @@ import { Tag } from '@modules/tag/infra/prisma/entities/tag.entity';
 export class TagService {
   constructor(private readonly prisma: PrismaService) {}
   async create({ name }: CreateTagDto): Promise<Tag> {
+    if (!name) {
+      throw new HttpException('Invalid name', HttpStatus.BAD_REQUEST);
+    }
+
     const findTagName = await this.prisma.tag.findFirst({
       where: { name: name },
     });
