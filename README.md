@@ -33,7 +33,7 @@ $ npm install
 ```
 
 ## Running the app
-# Run the migrations
+### Run the migrations
 ```bash
 $ npx prisma migrate deploy
 ```
