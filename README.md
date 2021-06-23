@@ -37,6 +37,7 @@ $ npm install
 ```bash
 $ npx prisma migrate deploy
 ```
+### Start the server
 ```bash
 # development
 $ npm run start
