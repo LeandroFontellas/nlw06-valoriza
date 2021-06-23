@@ -1,12 +1,13 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { PrismaService } from '@shared/prisma/prisma.service';
+import { CreateUserDto } from '../dto/create-user.dto';
+import { UpdateUserDto } from '../dto/update-user.dto';
+import { User } from '@modules/user/infra/prisma/entities/user.entity';
 
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
-  async create({ name, email, password, admin }: CreateUserDto) {
+  async create({ name, email, password, admin }: CreateUserDto): Promise<User> {
     const findUserByEmail = await this.prisma.user.findUnique({
       where: { email: email },
     });
