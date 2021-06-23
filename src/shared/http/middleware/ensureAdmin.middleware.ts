@@ -15,6 +15,6 @@ export class EnsureAdminMiddleware implements NestMiddleware {
     if (admin) {
       return next();
     }
-    throw new HttpException('User is not admin', HttpStatus.FORBIDDEN);
+    throw new HttpException('User is not admin', HttpStatus.UNAUTHORIZED);
   }
 }
