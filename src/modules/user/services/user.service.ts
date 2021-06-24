@@ -12,6 +12,10 @@ export class UserService {
     private readonly hash: BcryptService,
   ) {}
   async create({ name, email, password, admin }: CreateUserDto): Promise<User> {
+    if (!email) {
+      throw new HttpException('Email cannot be empty', HttpStatus.BAD_REQUEST);
+    }
+
     const findUserByEmail = await this.prisma.user.findUnique({
       where: { email: email },
     });
