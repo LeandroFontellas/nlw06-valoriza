@@ -7,10 +7,12 @@ import {
   Param,
   Delete,
   HttpCode,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from '@modules/user/services/user.service';
 import { CreateUserDto } from '@modules/user/dto/create-user.dto';
 import { UpdateUserDto } from '@modules/user/dto/update-user.dto';
+import { JwtAuthGuard } from 'auth/jwt-auth.guard';
 
 @Controller('user')
 export class UserController {
@@ -27,14 +29,16 @@ export class UserController {
     return this.userService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  @Get()
+  async findOne(@Body('email') email: string) {
+    return await this.userService.findOne(email);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(200)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+    return this.userService.update(id, updateUserDto);
   }
 
   @Delete(':id')

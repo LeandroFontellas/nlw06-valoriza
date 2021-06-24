@@ -30,12 +30,31 @@ export class UserService {
     return `This action returns all user`;
   }
 
-  async findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(email: string): Promise<User> {
+    const findUser = await this.prisma.user.findFirst({
+      where: { email: email },
+    });
+
+    if (!findUser) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+
+    return findUser;
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    const findUser = await this.prisma.user.findFirst({ where: { id: id } });
+
+    if (!findUser) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+
+    const updatedUser = await this.prisma.user.update({
+      where: { id: id },
+      data: updateUserDto,
+    });
+
+    return updatedUser;
   }
 
   async remove(id: number) {
