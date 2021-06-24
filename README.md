@@ -33,7 +33,11 @@ $ npm install
 ```
 
 ## Running the app
-
+### Run the migrations
+```bash
+$ npx prisma migrate deploy
+```
+### Start the server
 ```bash
 # development
 $ npm run start
@@ -44,6 +48,14 @@ $ npm run start:dev
 # production mode
 $ npm run start:prod
 ```
+
+Now use Insomnia or Postman to send a couple requests to the API on localhost:3000.
+
+Avaible routes:
+
+- user
+- tag
+- compliment
 
 ## Support
 
