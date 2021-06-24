@@ -1,5 +1,5 @@
 import { Controller, Post, Request } from '@nestjs/common';
-import { AuthService } from 'auth/auth.service';
+import { AuthService } from '@modules/user/providers/auth/auth.service';
 
 @Controller('auth/login')
 export class LoginController {
