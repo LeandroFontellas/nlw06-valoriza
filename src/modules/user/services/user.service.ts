@@ -32,7 +32,8 @@ export class UserService {
   }
 
   async findAll() {
-    return `This action returns all user`;
+    const allUsers = await this.prisma.user.findMany();
+    return allUsers;
   }
 
   async findByEmail(email: string): Promise<User> {

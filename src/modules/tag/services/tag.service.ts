@@ -25,8 +25,9 @@ export class TagService {
     return createdTag;
   }
 
-  findAll() {
-    return `This action returns all tag`;
+  async findAll() {
+    const findTags = await this.prisma.tag.findMany();
+    return findTags;
   }
 
   findOne(id: number) {
