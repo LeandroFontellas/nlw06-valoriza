@@ -31,7 +31,7 @@ export class UserController {
 
   @Get()
   async findOne(@Body('email') email: string) {
-    return await this.userService.findOne(email);
+    return await this.userService.findByEmail(email);
   }
 
   @UseGuards(JwtAuthGuard)
