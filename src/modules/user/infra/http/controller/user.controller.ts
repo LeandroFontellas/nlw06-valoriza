@@ -6,17 +6,25 @@ import {
   Patch,
   Param,
   Delete,
+  Request,
   HttpCode,
   UseGuards,
 } from '@nestjs/common';
 import { UserService } from '@modules/user/services/user.service';
 import { CreateUserDto } from '@modules/user/dto/create-user.dto';
 import { UpdateUserDto } from '@modules/user/dto/update-user.dto';
-import { JwtAuthGuard } from '@modules/user/providers/auth/jwt-auth.guard';
+import {
+  JwtAuthGuard,
+  Public,
+} from '@modules/user/providers/auth/jwt-auth.guard';
+import { AuthService } from '@modules/user/providers/auth/auth.service';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly authService: AuthService,
+  ) {}
 
   @Post()
   @HttpCode(201)
@@ -44,5 +52,11 @@ export class UserController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.userService.remove(+id);
+  }
+
+  @Public()
+  @Post('/auth/login')
+  async auth(@Request() req) {
+    return this.authService.login(req.body);
   }
 }
