@@ -1,15 +1,11 @@
-import { UserService } from '@modules/user/services/user.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '@shared/prisma/prisma.service';
-import { CreateComplimentDto } from '../dto/create-compliment.dto';
-import { UpdateComplimentDto } from '../dto/update-compliment.dto';
+import { CreateComplimentDto } from './dto/create-compliment.dto';
+import { UpdateComplimentDto } from './dto/update-compliment.dto';
 
 @Injectable()
 export class ComplimentService {
-  constructor(
-    private readonly prisma: PrismaService,
-    private readonly userService: UserService,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
   async create({
     message,
     tag_id,
@@ -44,19 +40,22 @@ export class ComplimentService {
     return compliment;
   }
 
-  findAll() {
-    return `This action returns all compliment`;
+  async findAll() {
+    return await this.prisma.compliment.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} compliment`;
+  async findOne(id: string) {
+    return await this.prisma.compliment.findUnique({ where: { id } });
   }
 
-  update(id: number, updateComplimentDto: UpdateComplimentDto) {
-    return `This action updates a #${id} compliment`;
+  async update(id: string, updateComplimentDto: UpdateComplimentDto) {
+    return await this.prisma.compliment.update({
+      where: { id },
+      data: updateComplimentDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} compliment`;
+  async remove(id: string) {
+    return await this.prisma.compliment.delete({ where: { id } });
   }
 }

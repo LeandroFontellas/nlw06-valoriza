@@ -7,7 +7,7 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { ComplimentService } from '@modules/compliment/services/compliment.service';
+import { ComplimentService } from '@modules/compliment/compliment.service';
 import { CreateComplimentDto } from '@modules/compliment/dto/create-compliment.dto';
 import { UpdateComplimentDto } from '@modules/compliment/dto/update-compliment.dto';
 
@@ -16,30 +16,30 @@ export class ComplimentController {
   constructor(private readonly complimentService: ComplimentService) {}
 
   @Post()
-  create(@Body() createComplimentDto: CreateComplimentDto) {
-    return this.complimentService.create(createComplimentDto);
+  async create(@Body() createComplimentDto: CreateComplimentDto) {
+    return await this.complimentService.create(createComplimentDto);
   }
 
   @Get()
-  findAll() {
-    return this.complimentService.findAll();
+  async findAll() {
+    return await this.complimentService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.complimentService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.complimentService.findOne(id);
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateComplimentDto: UpdateComplimentDto,
   ) {
-    return this.complimentService.update(+id, updateComplimentDto);
+    return await this.complimentService.update(id, updateComplimentDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.complimentService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return await this.complimentService.remove(id);
   }
 }

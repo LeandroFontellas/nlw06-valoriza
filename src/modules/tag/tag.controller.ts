@@ -9,7 +9,7 @@ import {
   HttpCode,
   UseGuards,
 } from '@nestjs/common';
-import { TagService } from '@modules/tag/services/tag.service';
+import { TagService } from '@modules/tag/tag.service';
 import { CreateTagDto } from '@modules/tag/dto/create-tag.dto';
 import { UpdateTagDto } from '@modules/tag/dto/update-tag.dto';
 import { AdminGuard } from '@modules/tag/guards/admin.guard';
@@ -26,24 +26,24 @@ export class TagController {
   }
 
   @Get()
-  findAll() {
-    return this.tagService.findAll();
+  async findAll() {
+    return await this.tagService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.tagService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.tagService.findOne(id);
   }
 
   @UseGuards(AdminGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTagDto: UpdateTagDto) {
-    return this.tagService.update(+id, updateTagDto);
+  async update(@Param('id') id: string, @Body() updateTagDto: UpdateTagDto) {
+    return await this.tagService.update(id, updateTagDto);
   }
 
   @UseGuards(AdminGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.tagService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return await this.tagService.remove(id);
   }
 }

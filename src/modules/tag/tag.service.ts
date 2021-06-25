@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateTagDto } from '../dto/create-tag.dto';
-import { UpdateTagDto } from '../dto/update-tag.dto';
+import { CreateTagDto } from './dto/create-tag.dto';
+import { UpdateTagDto } from './dto/update-tag.dto';
 import { PrismaService } from '@shared/prisma/prisma.service';
-import { Tag } from '@modules/tag/infra/prisma/entities/tag.entity';
+import { Tag } from '@modules/tag/entities/tag.entity';
 
 @Injectable()
 export class TagService {
@@ -26,19 +26,21 @@ export class TagService {
   }
 
   async findAll() {
-    const findTags = await this.prisma.tag.findMany();
-    return findTags;
+    return await this.prisma.tag.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} tag`;
+  async findOne(id: string) {
+    return await this.prisma.tag.findUnique({ where: { id } });
   }
 
-  update(id: number, updateTagDto: UpdateTagDto) {
-    return `This action updates a #${id} tag`;
+  async update(id: string, updateTagDto: UpdateTagDto) {
+    return await this.prisma.tag.update({
+      where: { id },
+      data: updateTagDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} tag`;
+  async remove(id: string) {
+    return await this.prisma.tag.delete({ where: { id } });
   }
 }

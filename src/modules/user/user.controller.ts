@@ -10,14 +10,11 @@ import {
   HttpCode,
   UseGuards,
 } from '@nestjs/common';
-import { UserService } from '@modules/user/services/user.service';
+import { UserService } from '@modules/user/user.service';
 import { CreateUserDto } from '@modules/user/dto/create-user.dto';
 import { UpdateUserDto } from '@modules/user/dto/update-user.dto';
-import {
-  JwtAuthGuard,
-  Public,
-} from '@modules/user/providers/auth/jwt-auth.guard';
-import { AuthService } from '@modules/user/providers/auth/auth.service';
+import { JwtAuthGuard, Public } from '@shared/auth/jwt-auth.guard';
+import { AuthService } from '@shared/auth/auth.service';
 
 @Controller('user')
 export class UserController {
@@ -33,8 +30,8 @@ export class UserController {
   }
 
   @Get()
-  findAll() {
-    return this.userService.findAll();
+  async findAll() {
+    return await this.userService.findAll();
   }
 
   @Get()
@@ -45,18 +42,18 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @HttpCode(200)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(id, updateUserDto);
+  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    return await this.userService.update(id, updateUserDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return await this.userService.remove(id);
   }
 
   @Public()
   @Post('/auth/login')
   async auth(@Request() req) {
-    return this.authService.login(req.body);
+    return await this.authService.login(req.body);
   }
 }

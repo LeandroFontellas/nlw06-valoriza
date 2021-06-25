@@ -1,9 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '@shared/prisma/prisma.service';
-import { CreateUserDto } from '../dto/create-user.dto';
-import { UpdateUserDto } from '../dto/update-user.dto';
-import { User } from '@modules/user/infra/prisma/entities/user.entity';
-import { BcryptService } from '../providers/hash/bcrypt.service';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from '@modules/user/entities/user.entity';
+import { BcryptService } from '@shared/hash/bcrypt.service';
 
 @Injectable()
 export class UserService {
@@ -79,7 +79,7 @@ export class UserService {
     return updatedUser;
   }
 
-  async remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: string) {
+    return await this.prisma.user.delete({ where: { id } });
   }
 }
