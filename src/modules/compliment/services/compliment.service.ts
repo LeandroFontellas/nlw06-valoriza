@@ -24,7 +24,13 @@ export class ComplimentService {
     }
 
     // verifica se existe o receiver
-    await this.userService.findOne(user_receiver);
+    const checkIfReceiverExists = await this.prisma.user.findUnique({
+      where: { id: user_receiver },
+    });
+
+    if (!checkIfReceiverExists) {
+      throw new HttpException('Receiver does not exist', HttpStatus.NOT_FOUND);
+    }
 
     const compliment = await this.prisma.compliment.create({
       data: {
